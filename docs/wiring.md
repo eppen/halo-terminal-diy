@@ -100,6 +100,36 @@ void setColor(int red, int green, int blue) {
 }
 ```
 
+### 方案三：hw-478集成RGB LED模块
+
+hw-478是集成式RGB LED模块，**已内置限流电阻**，因此**不需要外接电阻**。
+
+```
+Arduino UNO/Nano         hw-478 RGB模块
+───────────────────────────────────────
+ Digital Pin 9 (PWM)  ──── R (红色引脚)
+ Digital Pin 10 (PWM) ──── G (绿色引脚)
+ Digital Pin 11 (PWM) ──── B (蓝色引脚)
+ GND                 ──── GND（地线）
+ 5V                  ──── VCC（电源）
+```
+
+**特点**：
+- ✅ 已内置限流电阻，无需外接
+- ✅ 引脚已明确标记（R, G, B, GND, VCC）
+- ✅ 通常为共阳极设计（需确认模块说明）
+- ✅ 可直接连接，简化电路
+
+**注意事项**：
+1. 确认模块是共阳极还是共阴极：
+   - 共阳极：VCC接5V，R/G/B接Arduino PWM引脚
+   - 共阴极：GND接地，R/G/B接Arduino PWM引脚
+2. 如果模块没有标记，参考供应商文档
+3. 使用前可用万用表测试引脚
+
+**代码使用**：
+hw-478模块可直接使用现有Arduino代码，根据共阳/共阴选择对应的`setColor`函数。
+
 ## 🔍 引脚识别
 
 ### RGB LED引脚识别

@@ -9,7 +9,6 @@
   - 🟡 黄色: 正在思考/处理
   - 🔴 红色: 需要用户输入/确认
   - 🟣 紫色: 错误状态
-
 - **智能提醒**: 通过USB串口实时接收Claude Code状态变化
 - **呼吸灯效果**: 需要输入时红色LED会闪烁提醒
 - **完全开源**: 代码完全开放，可自由修改扩展
@@ -17,14 +16,16 @@
 
 ## 📦 所需材料
 
-| 组件 | 数量 | 说明 |
-|------|------|------|
-| Arduino开发板 | 1 | UNO、Nano或类似 |
-| RGB LED灯 | 1 | 共阳极或共阴极 |
-| 220Ω电阻 | 3 | 限流电阻 |
-| 面包板 | 1 | 用于电路搭建 |
-| 杜邦线 | 若干 | 连接线 |
-| USB数据线 | 1 | 连接电脑和Arduino |
+
+| 组件         | 数量  | 说明           |
+| ---------- | --- | ------------ |
+| Arduino开发板 | 1   | UNO、Nano或类似  |
+| RGB LED灯   | 1   | 共阳极或共阴极      |
+| 220Ω电阻     | 3   | 限流电阻         |
+| 面包板        | 1   | 用于电路搭建       |
+| 杜邦线        | 若干  | 连接线          |
+| USB数据线     | 1   | 连接电脑和Arduino |
+
 
 ## 🔧 硬件连接
 
@@ -49,24 +50,28 @@ GND       →  公共阴极 (-)
 ```
 
 **注意**: 
+
 - 每个LED引脚都需要串联220Ω电阻
 - 如果使用不同引脚，需修改Arduino代码中的引脚定义
 
 ## 🚀 快速开始
 
 ### 1. 上传Arduino代码
+
 1. 打开Arduino IDE
 2. 打开 `arduino/halo_terminal.ino`
 3. 选择正确的开发板和端口
 4. 点击上传
 
 ### 2. 安装Python依赖
+
 ```bash
 cd python
 pip install -r requirements.txt
 ```
 
 ### 3. 测试连接
+
 ```bash
 # 测试所有功能
 python test/test_halo.py
@@ -76,6 +81,7 @@ python python/halo_controller.py --debug
 ```
 
 ### 4. 配置Claude Code
+
 编辑 `~/.claude/settings.json`，添加以下钩子配置：
 
 ```json
@@ -150,11 +156,13 @@ python python/halo_controller.py --debug
 ## 📖 使用说明
 
 ### 基本使用
+
 1. 连接Arduino到电脑
 2. 确保Python脚本有执行权限：`chmod +x python/*.py`
 3. 启动Claude Code，LED会自动响应状态变化
 
 ### 手动控制
+
 ```bash
 # 设置状态
 python python/halo_controller.py --state idle      # 蓝色
@@ -176,39 +184,46 @@ python python/halo_controller.py --port /dev/cu.usbmodem1101 --state idle
 ```
 
 ### 调试模式
+
 如果不想连接硬件，可以使用调试模式：
+
 ```bash
 python python/halo_controller.py --debug --state thinking
 ```
 
 ## 🎯 状态映射
 
-| Claude Code事件 | LED状态 | 说明 |
-|----------------|---------|------|
-| SessionStart | 蓝色 | 会话开始 |
-| UserPromptSubmit | 黄色 | 用户提交提示 |
-| PreToolUse | 黄色 | 准备使用工具 |
-| PostToolUse | 蓝色 | 工具使用完成 |
-| idle_prompt | 红色 | 需要用户输入 |
-| permission_prompt | 红色 | 需要权限确认 |
-| SessionEnd | 蓝色 | 会话结束 |
-| 其他事件 | 蓝色 | 默认状态 |
+
+| Claude Code事件     | LED状态 | 说明     |
+| ----------------- | ----- | ------ |
+| SessionStart      | 蓝色    | 会话开始   |
+| UserPromptSubmit  | 黄色    | 用户提交提示 |
+| PreToolUse        | 黄色    | 准备使用工具 |
+| PostToolUse       | 蓝色    | 工具使用完成 |
+| idle_prompt       | 红色    | 需要用户输入 |
+| permission_prompt | 红色    | 需要权限确认 |
+| SessionEnd        | 蓝色    | 会话结束   |
+| 其他事件              | 蓝色    | 默认状态   |
+
 
 ## 🛠️ 故障排除
 
 ### LED不亮
+
 1. 检查接线是否正确
 2. 确认电阻已正确串联
 3. 检查Arduino是否供电
 4. 验证引脚定义是否与接线一致
 
 ### Python脚本无法连接
+
 1. 检查串口权限：`ls -l /dev/tty.usb*`
 2. 可能需要添加用户到dialout组：`sudo usermod -a -G dialout $USER`
 3. 重新插拔USB线
 4. 检查端口号：`python python/halo_controller.py --port /dev/ttyUSB0`
 
 ### Claude Code钩子不工作
+
 1. 检查路径是否正确
 2. 确保Python脚本有执行权限
 3. 查看Claude Code日志：`tail -f ~/.claude/claude.log`
@@ -217,7 +232,9 @@ python python/halo_controller.py --debug --state thinking
 ## 🔧 自定义修改
 
 ### 修改LED引脚
+
 编辑 `arduino/halo_terminal.ino`：
+
 ```cpp
 #define PIN_RED 9    // 改为你的红色引脚
 #define PIN_GREEN 10 // 改为你的绿色引脚
@@ -225,11 +242,13 @@ python python/halo_controller.py --debug --state thinking
 ```
 
 ### 添加新状态
+
 1. 在Arduino代码中添加新状态
 2. 在Python脚本中添加事件映射
 3. 在Claude Code钩子中配置新事件
 
 ### 扩展功能
+
 - 添加蜂鸣器提示音
 - 添加WiFi模块远程控制
 - 添加LCD屏幕显示状态文本
@@ -270,4 +289,5 @@ MIT License - 详见LICENSE文件
 灵感来自官方Halo Terminal项目，但这是一个完全开源的DIY版本。
 
 ---
+
 **让编程更有趣，让等待不再无聊！** 🚀
