@@ -1,8 +1,8 @@
 {
   "halo-terminal-diy:30393": {
-    "state": 1,
-    "last_updated": "2026-04-13T22:17:10.21816+08:00",
-    "event": "UserPromptSubmit",
+    "state": 3,
+    "last_updated": "2026-04-13T22:21:24.520611+08:00",
+    "event": "Stop",
     "directory_name": "halo-terminal-diy"
   }
 }
