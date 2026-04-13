@@ -52,6 +52,7 @@ Desktop.ini
 *.ino
 
 # Project specific
+.hat_state.json
 build/
 dist/
 *.egg-info/
