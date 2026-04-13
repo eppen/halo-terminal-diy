@@ -49,7 +49,6 @@ Desktop.ini
 *.lst
 *.su
 *.cpp
-*.ino
 
 # Project specific
 .hat_state.json
