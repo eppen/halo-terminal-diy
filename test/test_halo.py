@@ -9,8 +9,15 @@ import time
 import sys
 import os
 
+# 以当前文件位置推导项目根目录，避免受 cwd 影响
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+PYTHON_DIR = os.path.join(PROJECT_ROOT, 'python')
+ARDUINO_DIR = os.path.join(PROJECT_ROOT, 'arduino')
+HALO_CONTROLLER = os.path.join(PYTHON_DIR, 'halo_controller.py')
+HALO_HOOK = os.path.join(PYTHON_DIR, 'halo_hook.py')
+
 # 添加项目路径以便导入模块
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '../python'))
+sys.path.insert(0, PYTHON_DIR)
 
 def test_claude_events():
     """测试Claude Code事件"""
@@ -38,7 +45,7 @@ def test_claude_events():
 
         # 调用halo_controller.py
         result = subprocess.run(
-            [sys.executable, '../python/halo_controller.py', '--debug'],
+            [sys.executable, HALO_CONTROLLER, '--debug'],
             input=json_data,
             text=True,
             capture_output=True
@@ -82,7 +89,7 @@ def test_direct_commands():
 
         # 调用halo_controller.py
         result = subprocess.run(
-            [sys.executable, '../python/halo_controller.py', '--debug'] + args,
+            [sys.executable, HALO_CONTROLLER, '--debug'] + args,
             text=True,
             capture_output=True
         )
@@ -113,7 +120,7 @@ def test_hook_performance():
 
     def run_hook():
         result = subprocess.run(
-            [sys.executable, '../python/halo_hook.py'],
+            [sys.executable, HALO_HOOK],
             input=json_data,
             text=True,
             capture_output=True,
@@ -153,15 +160,14 @@ def main():
 
     # 检查文件
     required_files = [
-        ('../arduino/halo_terminal/halo_terminal.ino', 'Arduino代码'),
-        ('../python/halo_controller.py', '主控制器'),
-        ('../python/halo_hook.py', '钩子脚本'),
-        ('../python/requirements.txt', '依赖文件')
+        (os.path.join(ARDUINO_DIR, 'halo_terminal', 'halo_terminal.ino'), 'Arduino代码'),
+        (HALO_CONTROLLER, '主控制器'),
+        (HALO_HOOK, '钩子脚本'),
+        (os.path.join(PYTHON_DIR, 'requirements.txt'), '依赖文件'),
     ]
 
     for filepath, description in required_files:
-        full_path = os.path.join(os.path.dirname(__file__), filepath)
-        if os.path.exists(full_path):
+        if os.path.exists(filepath):
             print(f"✅ {description}: 存在")
         else:
             print(f"❌ {description}: 缺失")
